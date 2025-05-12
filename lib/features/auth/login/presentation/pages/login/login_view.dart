@@ -37,9 +37,7 @@ class LoginPage extends StatelessWidget with Validators {
           child: BlocConsumer<AuthBloc, AuthState>(
             listener: (context, state) {
               if (state is AuthSuccess) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Logged in! Token: ${state.user.accessToken}')),
-                );
+
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (_) =>  HomeView()),
@@ -69,7 +67,7 @@ class LoginPage extends StatelessWidget with Validators {
                             controller: emailController,
                             keyboardType: TextInputType.emailAddress,
                           ),
-                          SB.h(context.height * 0.02),
+                          20.h,
                           CustomTextField(
                             title: "Password",
                             isPasswordField: true,
