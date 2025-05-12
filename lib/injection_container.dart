@@ -1,29 +1,29 @@
-//
-// import 'package:clean_architecture_bloc/features/daily_news/data/data_sources/remote/news_api_services.dart';
-// import 'package:clean_architecture_bloc/features/daily_news/data/repository/article_repository_impl.dart';
-// import 'package:clean_architecture_bloc/features/daily_news/domain/repository/article_repository.dart';
-// import 'package:clean_architecture_bloc/features/daily_news/domain/usecases/get_article.dart';
-// import 'package:clean_architecture_bloc/features/daily_news/presentation/bloc/article/remote/remote_article_bloc.dart';
-// import 'package:dio/dio.dart';
-// import 'package:get_it/get_it.dart';
-//
-// final sl =GetIt.instance;
-//
-//
-// Future<void> initializeDependencies() async {
-//   sl.registerSingleton<Dio>(Dio());
-//
-//   sl.registerSingleton<NewsApiServices>(NewsApiServices(sl()));
-//
-//   sl.registerSingleton<ArticleRepository>(ArticleRepositoryImpl(sl()));
-//
-//   sl.registerSingleton<GetArticleUseCase>(
-//     GetArticleUseCase(sl())
-//   );
-//
-//
-//   //blocs
-//   sl.registerFactory<RemoteArticlesBloc>(
-//       ()=>RemoteArticlesBloc(sl())
-//   );
-// }
+
+import 'package:dio/dio.dart';
+import 'package:get_it/get_it.dart';
+import 'package:http/http.dart' as http;
+
+import 'features/auth/login/data/data_sources/remote/auth_remote_data_source.dart';
+import 'features/auth/login/data/repository/article_repository_impl.dart';
+import 'features/auth/login/domain/repository/auth_repository.dart';
+import 'features/auth/login/domain/usecases/login_usecase.dart';
+import 'features/auth/login/presentation/pages/login/bloc/login_bloc.dart';
+import 'features/home/presentation/home/bloc/home_bloc.dart';
+final sl =GetIt.instance;
+
+
+Future<void> initializeDependencies() async {
+  sl.registerSingleton<http.Client>(http.Client());
+
+  sl.registerLazySingleton<AuthRemoteDataSource>(
+  () => AuthRemoteDataSourceImpl(sl()));
+  sl.registerLazySingleton<AuthRepository>(
+  () => AuthRepositoryImpl(sl()));
+
+  sl.registerLazySingleton(() => LoginUseCase(sl()));
+
+  sl.registerFactory(() => AuthBloc(sl()));
+
+  sl.registerFactory(() => HomeBloc());
+
+}

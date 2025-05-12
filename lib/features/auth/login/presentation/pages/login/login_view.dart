@@ -1,39 +1,64 @@
-
 import 'package:clean_architecture_bloc/core/extensions/build_context_extension.dart';
 import 'package:clean_architecture_bloc/core/extensions/size_extension.dart';
+import 'package:clean_architecture_bloc/features/home/presentation/home/home.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
 import '../../../../../../core/components/app_button.dart';
 import '../../../../../../core/components/app_text_field.dart';
 import '../../../../../../core/constants/imports.dart';
 import '../../../../../../core/mixins/validators.dart';
 import '../../../../../../gen/assets.gen.dart';
 import '../../../../../../widgets/custom_rich_text.dart';
+import 'bloc/login_bloc.dart';
+import 'bloc/login_event.dart';
+import 'bloc/login_state.dart';
 
 class LoginPage extends StatelessWidget with Validators {
+  final emailController = TextEditingController(text: 'john@mail.com');
+  final passwordController = TextEditingController(text: 'changeme');
+  final _formKey = GlobalKey<FormState>();
+
   LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage(Assets.images.background2.path),
-                  fit: BoxFit.cover),
+      body: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(Assets.images.background2.path),
+              fit: BoxFit.cover,
             ),
-            child: Scaffold(
-              backgroundColor: Colors.transparent,
-              body: SingleChildScrollView(
+          ),
+          child: BlocConsumer<AuthBloc, AuthState>(
+            listener: (context, state) {
+              if (state is AuthSuccess) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Logged in! Token: ${state.user.accessToken}')),
+                );
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) =>  HomeView()),
+                );
+              } else if (state is AuthFailure) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(state.message)),
+                );
+              }
+            },
+            builder: (context, state) {
+              return SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SB.h(context.height * 0.15),
+                    SizedBox(height: context.height * 0.15),
                     Form(
+                      key: _formKey,
                       child: Column(
-                        mainAxisSize: MainAxisSize.min,
                         children: [
                           SvgPicture.asset(Assets.icons.logo),
                           50.h,
@@ -41,6 +66,7 @@ class LoginPage extends StatelessWidget with Validators {
                             title: "Email",
                             hintText: "Type your email",
                             validator: validateEmail,
+                            controller: emailController,
                             keyboardType: TextInputType.emailAddress,
                           ),
                           SB.h(context.height * 0.02),
@@ -48,26 +74,41 @@ class LoginPage extends StatelessWidget with Validators {
                             title: "Password",
                             isPasswordField: true,
                             hintText: "Type your password",
-                            validator: validatePassword,
+                            // validator: validatePassword,
+                            controller: passwordController,
                           ),
                           Align(
-                              alignment: Alignment.centerRight,
-                              child: InkWell(
-
-
-                                  child: Text(
-                                    "Forgot your password?",
-                                    style: context.bodyMedium!
-                                        .copyWith(color: context.primary),
-                                  ))),
+                            alignment: Alignment.centerRight,
+                            child: InkWell(
+                              onTap: () {
+                              },
+                              child: Text(
+                                "Forgot your password?",
+                                style: context.bodyMedium!.copyWith(
+                                  color: context.primary,
+                                ),
+                              ),
+                            ),
+                          ),
                           50.h,
-                          AppButton.primary(
+                          state is AuthLoading
+                              ? const CircularProgressIndicator()
+                              : AppButton.primary(
                             title: 'Log In',
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                context.read<AuthBloc>().add(
+                                  LoginRequested(
+                                    emailController.text,
+                                    passwordController.text,
+
+                                  ),
+                                );
+                              }
+                            },
                           ),
                           25.h,
-                          // socialButton(context, true),
-                          // 35.h,
-                          CustomRichText(
+                          const CustomRichText(
                             text: 'Not a member yet? ',
                             highlightedText: 'Sign up',
                           ),
@@ -76,11 +117,11 @@ class LoginPage extends StatelessWidget with Validators {
                     ),
                   ],
                 ),
-              ),
-            ),
+              );
+            },
           ),
         ),
-
+      ),
     );
-
-}}
+  }
+}

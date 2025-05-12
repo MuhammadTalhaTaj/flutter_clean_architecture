@@ -10,6 +10,7 @@ class ThemeLight extends AppTheme {
         useMaterial3: true,
         primarySwatch: primarySwatch,
         extensions: [extension],
+
         scaffoldBackgroundColor: scaffoldBackgroundColor,
         cardColor: cardColor,
         checkboxTheme: CheckboxThemeData(
@@ -37,6 +38,7 @@ class ThemeLight extends AppTheme {
           secondary: secondary,
           onSecondary: onSecondary,
           error: errorColor,
+
         ),
 
         inputDecorationTheme: inputDecorationTheme,
@@ -87,6 +89,7 @@ class ThemeLight extends AppTheme {
           colors: [primary, secondary],
         ),
         grey: grey,
+
       );
 
   @override
@@ -142,6 +145,10 @@ class ThemeLight extends AppTheme {
   @override
   Color get cardColor => const Color(0xffFFF4FD);
 
+
+
   @override
   Color get grey => const Color(0xff98A2B3);
+  Color get extraLightGrey =>  Colors.grey.withOpacity(0.3);
+  Color get lightGrey =>  Colors.grey.withOpacity(0.3);
 }

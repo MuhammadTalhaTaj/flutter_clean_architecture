@@ -111,7 +111,7 @@ extension BuildContextEntension<T> on BuildContext {
       Theme.of(this).extension<AppThemeExtension>()!.horizontal;
 
   Color get extraLightGrey =>
-      Theme.of(this).extension<AppThemeExtension>()!.extraLightGrey;
+      Theme.of(this).extension<AppThemeExtension>()?.extraLightGrey??Colors.grey.withOpacity(0.3);
 
   Color get lightGrey =>
       Theme.of(this).extension<AppThemeExtension>()!.lightGrey;
