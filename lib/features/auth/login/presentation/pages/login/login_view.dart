@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../../../../config/routes/routes.dart';
 import '../../../../../../core/components/app_button.dart';
 import '../../../../../../core/components/app_text_field.dart';
 import '../../../../../../core/constants/imports.dart';
@@ -16,8 +17,8 @@ import 'bloc/login_event.dart';
 import 'bloc/login_state.dart';
 
 class LoginPage extends StatelessWidget with Validators {
-  final emailController = TextEditingController(text: 'john@mail.com');
-  final passwordController = TextEditingController(text: 'changeme');
+  final emailController = TextEditingController(text: 'hh@gmail.com');
+  final passwordController = TextEditingController(text: '890890Tt\$');
   final _formKey = GlobalKey<FormState>();
 
   LoginPage({super.key});
@@ -37,12 +38,12 @@ class LoginPage extends StatelessWidget with Validators {
           child: BlocConsumer<AuthBloc, AuthState>(
             listener: (context, state) {
               if (state is AuthSuccess) {
-
-                Navigator.pushReplacement(
+                Navigator.pushReplacementNamed(
                   context,
-                  MaterialPageRoute(builder: (_) =>  HomeView()),
+                  Routes.home,
                 );
               } else if (state is AuthFailure) {
+
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text(state.message)),
                 );
@@ -72,7 +73,7 @@ class LoginPage extends StatelessWidget with Validators {
                             title: "Password",
                             isPasswordField: true,
                             hintText: "Type your password",
-                            // validator: validatePassword,
+                             validator: validatePassword,
                             controller: passwordController,
                           ),
                           Align(
