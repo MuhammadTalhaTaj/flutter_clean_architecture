@@ -18,9 +18,7 @@ class DashboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => DashboardBloc()..add(ChangePageEvent(index ?? 0)),
-      child: BlocBuilder<DashboardBloc, DashboardState>(
+    return BlocBuilder<DashboardBloc, DashboardState>(
         builder: (context, state) {
           return Scaffold(
             resizeToAvoidBottomInset: false,
@@ -37,7 +35,7 @@ class DashboardView extends StatelessWidget {
             bottomNavigationBar: const NavBar(),
           );
         },
-      ),
+
     );
   }
 }
