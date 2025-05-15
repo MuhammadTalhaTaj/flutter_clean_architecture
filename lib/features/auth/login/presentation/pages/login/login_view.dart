@@ -12,9 +12,13 @@ import '../../../../../../core/constants/imports.dart';
 import '../../../../../../core/mixins/validators.dart';
 import '../../../../../../gen/assets.gen.dart';
 import '../../../../../../widgets/custom_rich_text.dart';
-import 'bloc/login_bloc.dart';
-import 'bloc/login_event.dart';
-import 'bloc/login_state.dart';
+import '../../../../../dashboard/presentation/bloc/dashboard_bloc.dart';
+import '../../../../../dashboard/presentation/bloc/dashboard_event.dart';
+import '../../../../../dashboard/presentation/bloc/dashboard_state.dart';
+import '../../bloc/login_bloc.dart';
+import '../../bloc/login_event.dart';
+import '../../bloc/login_state.dart';
+
 
 class LoginPage extends StatelessWidget with Validators {
   final emailController = TextEditingController(text: 'hh@gmail.com');
@@ -40,7 +44,7 @@ class LoginPage extends StatelessWidget with Validators {
               if (state is AuthSuccess) {
                 Navigator.pushReplacementNamed(
                   context,
-                  Routes.home,
+                  Routes.dashboard,
                 );
               } else if (state is AuthFailure) {
 

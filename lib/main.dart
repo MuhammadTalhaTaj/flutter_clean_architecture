@@ -1,15 +1,15 @@
-import 'package:clean_architecture_bloc/config/theme/app_theme.dart';
+import 'package:clean_architecture_bloc/features/activities_view/presentaiton/activities_view.dart';
 import 'package:clean_architecture_bloc/features/auth/login/presentation/pages/login/login_view.dart';
+import 'package:clean_architecture_bloc/features/community_view/presentaiton/community_view.dart';
+import 'package:clean_architecture_bloc/features/dashboard/presentation/bloc/dashboard_bloc.dart';
+import 'package:clean_architecture_bloc/features/dashboard/presentation/pages/dashboard_page/dashboard_page.dart';
+import 'package:clean_architecture_bloc/features/wellbeing_view/presentaiton/wellbeing_view.dart';
 import 'package:clean_architecture_bloc/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
 import 'config/routes/routes.dart';
 import 'config/theme/theme_light.dart';
-import 'features/auth/login/data/data_sources/remote/auth_remote_data_source.dart';
-import 'features/auth/login/data/repository/article_repository_impl.dart';
-import 'features/auth/login/domain/usecases/login_usecase.dart';
-import 'features/auth/login/presentation/pages/login/bloc/login_bloc.dart';
+import 'features/auth/login/presentation/bloc/login_bloc.dart';
 import 'features/home/presentation/home/bloc/home_bloc.dart';
 import 'features/home/presentation/home/bloc/home_event.dart';
 import 'features/home/presentation/home/home.dart';
@@ -32,6 +32,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<AuthBloc>(
           create: (context) => sl<AuthBloc>(),
         ),
+        BlocProvider<DashboardBloc>(
+          create: (context) => sl<DashboardBloc>(),
+        ),
         BlocProvider<HomeBloc>(
           create: (context) {
             final homeBloc = sl<HomeBloc>();
@@ -45,7 +48,11 @@ class MyApp extends StatelessWidget {
         initialRoute: '/login',
         routes: {
           Routes.login: (context) => LoginPage(),
-          Routes.home: (context) => HomeView(),
+          Routes.home: (context) => const HomeView(),
+          Routes.wellbeing: (context) => const WellbeingView(),
+          Routes.community: (context) => const CommunityView(),
+          Routes.activity: (context) => const ActivitiesView(),
+          Routes.dashboard: (context) => const DashboardView(),
         },
       ),
     );
