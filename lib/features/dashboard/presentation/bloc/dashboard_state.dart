@@ -5,7 +5,9 @@ abstract class DashboardState extends Equatable {
   List<Object?> get props => [];
 }
 
-class DashboardInitial extends DashboardState {}
+class DashboardInitial extends DashboardState {
+
+}
 
 class PageChangedState extends DashboardState {
   final int pageIndex;

@@ -22,15 +22,10 @@ class DashboardView extends StatelessWidget {
       create: (_) => DashboardBloc()..add(ChangePageEvent(index ?? 0)),
       child: BlocBuilder<DashboardBloc, DashboardState>(
         builder: (context, state) {
-          int currentTab = 0;
-          if (state is PageChangedState) {
-            currentTab = state.pageIndex;
-          }
-
           return Scaffold(
             resizeToAvoidBottomInset: false,
             body: LazyIndexedStack(
-              index: currentTab,
+              index:state is PageChangedState? state.pageIndex:0,
               children: const [
                 HomeView(),
                 ActivitiesView(),
